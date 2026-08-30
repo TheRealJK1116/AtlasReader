@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Device-to-device backup: settings + reading library metadata (not raw files). -->
+<full-backup-content>
+    <include domain="sharedpref" path="." />
+    <include domain="database" path="atlas_reader.db" />
+    <include domain="database" path="atlas_reader.db-wal" />
+    <include domain="database" path="atlas_reader.db-shm" />
+    <include domain="file" path="datastore" />
+    <include domain="file" path="no_backup" />
+    <exclude domain="file" path="cache" />
+    <exclude domain="file" path="covers" />
+</full-backup-content>
