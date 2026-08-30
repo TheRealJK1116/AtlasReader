@@ -71,7 +71,6 @@ fun ReaderWebView(
     AndroidView(
         factory = { ctx ->
             WebView(ctx).apply {
-                val webView = this
                 @SuppressLint("SetJavaScriptEnabled")
                 settings.javaScriptEnabled = true
                 settings.domStorageEnabled = true
@@ -152,7 +151,7 @@ fun ReaderWebView(
                         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
                             return when (item.itemId) {
                                 HIGHLIGHT, NOTE -> {
-                                    requestSelection(webView) { start, end, text ->
+                                    requestSelection(this@apply) { start, end, text ->
                                         currentOnSelection(start, end, text)
                                     }
                                     mode.finish()

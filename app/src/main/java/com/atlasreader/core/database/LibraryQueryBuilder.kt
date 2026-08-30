@@ -57,7 +57,7 @@ object LibraryQueryBuilder {
         }
         if (filter.formats.isNotEmpty()) {
             where += "d.format IN (${filter.formats.joinToString(",") { "?" }})"
-            args += filter.formats.map { it.name }
+            args.addAll(filter.formats.map { it.name })
         }
         filter.collectionId?.let { id ->
             where += "EXISTS (SELECT 1 FROM collection_documents cd WHERE cd.documentId = d.id AND cd.collectionId = ?)"

@@ -2,7 +2,9 @@ package com.atlasreader.data.repository
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingSource
-import androidx.paging.map
+import androidx.paging.PagingSource.LoadParams
+import androidx.paging.PagingSource.LoadResult
+import androidx.paging.PagingState
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.atlasreader.core.common.DispatcherProvider
 import com.atlasreader.core.common.TimeProvider
@@ -49,9 +51,28 @@ class LibraryRepository @Inject constructor(
     @OptIn(ExperimentalPagingApi::class)
     fun library(filter: LibraryFilter, sort: LibrarySort): PagingSource<Int, DocumentSummary> {
         val built = LibraryQueryBuilder.build(filter, sort)
-        return documentDao.observeLibrary(
+        val source = documentDao.observeLibrary(
             SimpleSQLiteQuery(built.sql, built.args.toTypedArray())
-        ).map { it.toSummary() }
+        )
+        // Room hands us a PagingSource<...DocumentRow>; PagingData.map cannot be applied to a
+        // PagingSource, so map each loaded page to the domain model with a thin wrapper.
+        return object : PagingSource<Int, DocumentSummary>() {
+            override fun getRefreshKey(state: PagingState<Int, DocumentSummary>): Int? = null
+
+            override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DocumentSummary> {
+                return when (val result = source.load(params)) {
+                    is LoadResult.Page -> LoadResult.Page(
+                        data = result.data.map { it.toSummary() },
+                        prevKey = result.prevKey,
+                        nextKey = result.nextKey,
+                        itemsBefore = result.itemsBefore,
+                        itemsAfter = result.itemsAfter,
+                    )
+                    is LoadResult.Error -> LoadResult.Error(result.throwable)
+                    is LoadResult.Invalid -> LoadResult.Invalid()
+                }
+            }
+        }
     }
 
     fun continueReading(limit: Int = 12): Flow<List<DocumentSummary>> =

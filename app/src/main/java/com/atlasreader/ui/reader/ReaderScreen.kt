@@ -7,7 +7,6 @@ import androidx.collection.LruCache
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -71,7 +70,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
@@ -408,9 +406,7 @@ private fun PdfReader(viewModel: ReaderViewModel) {
         state = pagerState,
         modifier = Modifier
             .fillMaxSize()
-            .pointerInput(Unit) {
-                androidx.compose.foundation.gestures.detectTapGestures { viewModel.toggleBars() }
-            },
+            .clickable { viewModel.toggleBars() },
     ) { page ->
         PdfPage(provider, page, Modifier.fillMaxSize())
     }
