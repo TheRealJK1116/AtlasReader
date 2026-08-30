@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.atlasreader.core.database.entity.CollectionDocumentCrossRef
 import com.atlasreader.core.database.entity.CollectionEntity
+import com.atlasreader.core.database.entity.DocumentRow
 import kotlinx.coroutines.flow.Flow
 
 @Dao
