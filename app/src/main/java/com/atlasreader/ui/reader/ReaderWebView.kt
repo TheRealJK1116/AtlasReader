@@ -136,7 +136,7 @@ fun ReaderWebView(
             }
 
             if (allowSelectionActions) {
-                view.customSelectionActionModeCallback = object : ActionMode.Callback {
+                view.setCustomSelectionActionModeCallback(object : ActionMode.Callback {
                     private val HIGHLIGHT = 1001
                     private val NOTE = 1002
 
@@ -162,7 +162,7 @@ fun ReaderWebView(
                     }
 
                     override fun onDestroyActionMode(mode: ActionMode) {}
-                }
+                })
             }
 
             webView.value = view
