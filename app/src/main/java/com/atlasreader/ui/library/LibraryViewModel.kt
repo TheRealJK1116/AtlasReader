@@ -12,6 +12,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.atlasreader.core.database.LibraryFilter
 import com.atlasreader.core.database.LibrarySort
+import com.atlasreader.core.database.entity.CollectionWithCount
 import com.atlasreader.core.importer.ImportRequest
 import com.atlasreader.data.repository.SettingsRepository
 import com.atlasreader.domain.model.DocumentSummary
@@ -87,7 +88,7 @@ class LibraryViewModel @Inject constructor(
             }
             .cachedIn(viewModelScope)
 
-    val collectionsFlow: StateFlow<List<com.atlasreader.data.repository.CollectionWithCount>> =
+    val collectionsFlow: StateFlow<List<CollectionWithCount>> =
         collections.observeAll()
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 

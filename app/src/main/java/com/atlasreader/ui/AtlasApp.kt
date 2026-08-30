@@ -66,7 +66,10 @@ fun AtlasApp(rootViewModel: RootViewModel = hiltViewModel()) {
                     }
                     composable(Routes.STATS) { StatsScreen() }
                     composable(Routes.SETTINGS) { SettingsScreen() }
-                    composable(Routes.READER) { ReaderScreen(navController = navController) }
+                    composable(
+                        route = Routes.READER,
+                        arguments = listOf(navArgument("documentId") { type = NavType.LongType }),
+                    ) { ReaderScreen(navController = navController) }
                 }
             }
         }

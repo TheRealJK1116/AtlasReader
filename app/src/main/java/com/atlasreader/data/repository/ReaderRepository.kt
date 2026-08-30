@@ -19,6 +19,10 @@ import com.atlasreader.core.engine.DocumentOpenException
 import com.atlasreader.core.engine.DocumentSource
 import com.atlasreader.core.engine.EngineRegistry
 import com.atlasreader.core.engine.ParsedDocument
+import com.atlasreader.domain.model.Bookmark
+import com.atlasreader.domain.model.Highlight
+import com.atlasreader.domain.model.ReaderNote
+import com.atlasreader.domain.model.ReadingPosition
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

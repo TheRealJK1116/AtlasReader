@@ -76,6 +76,14 @@ data class CollectionEntity(
     val createdAtMs: Long,
 )
 
+/** Column projection of collections ⋈ COUNT(collection_documents). */
+data class CollectionWithCount(
+    val id: Long,
+    val name: String,
+    val createdAtMs: Long,
+    val documentCount: Int,
+)
+
 @Entity(
     tableName = "collection_documents",
     primaryKeys = ["collectionId", "documentId"],

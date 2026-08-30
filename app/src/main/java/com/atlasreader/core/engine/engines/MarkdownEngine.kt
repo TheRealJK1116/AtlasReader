@@ -85,7 +85,7 @@ class MarkdownEngine @Inject constructor() : DocumentEngine {
             ProseChunk(
                 resourceToken = index.toString(),
                 index = index,
-                heading = section.heading?.first(),
+                heading = section.heading?.first,
                 text = chunkBody,
                 html = MarkdownRenderer.toHtml(chunkBody),
             )

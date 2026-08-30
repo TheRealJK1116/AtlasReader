@@ -87,7 +87,7 @@ object LibraryQueryBuilder {
         val sql = buildString {
             append(PROJECTION).append(' ')
             append(FROM).append(' ')
-            append("WHERE ").append(where.ifEmpty { "1=1" }.joinToString(" AND ")).append(' ')
+            append("WHERE ").append(where.ifEmpty { listOf("1=1") }.joinToString(" AND ")).append(' ')
             append("ORDER BY ").append(orderBy)
         }
         return BuiltQuery(sql, args)

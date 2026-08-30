@@ -46,6 +46,9 @@ interface DocumentDao {
     @Query("SELECT id FROM documents")
     suspend fun allIds(): List<Long>
 
+    @Query("SELECT contentHash FROM documents")
+    suspend fun allHashes(): List<String>
+
     @Query("SELECT * FROM documents ORDER BY addedAtMs DESC LIMIT 1")
     suspend fun latestAdded(): DocumentEntity?
 

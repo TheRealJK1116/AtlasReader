@@ -52,7 +52,7 @@ class FileCopier @Inject constructor(
                         if (head.size() < HEAD_SAMPLE) {
                             head.write(buffer, 0, read.coerceAtMost(HEAD_SAMPLE - head.size()))
                         }
-                        tailRing.write(buffer, 0, read)
+                        tailRing.write(buffer, read)
                     }
                 }
                 if (total > maxBytes) {
