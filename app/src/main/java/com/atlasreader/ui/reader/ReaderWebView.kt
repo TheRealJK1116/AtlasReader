@@ -136,7 +136,11 @@ fun ReaderWebView(
             }
 
             if (allowSelectionActions) {
-                view.setCustomSelectionActionModeCallback(object : ActionMode.Callback {
+                // WebView's text-selection toolbar hook is setCustomActionModeCallback
+                // (API 23+; minSdk is 28). TextView.setCustomSelectionActionModeCallback
+                // does not exist on WebView — WebView is not a TextView — so that call
+                // could never compile. The ActionMode.Callback contract is identical.
+                view.setCustomActionModeCallback(object : ActionMode.Callback {
                     private val HIGHLIGHT = 1001
                     private val NOTE = 1002
 
