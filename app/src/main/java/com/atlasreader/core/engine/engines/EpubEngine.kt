@@ -38,12 +38,12 @@ class EpubEngine @Inject constructor() : DocumentEngine {
         val (opf, _) = openPackage(context, source) ?: return ExtractedMetadata()
         val meta = opf.select("metadata").firstOrNull()
         return ExtractedMetadata(
-            title = meta?.select("dc\\:title, title").firstOrNull()?.text()?.trim()?.takeIf { it.isNotEmpty() },
-            author = meta?.select("dc\\:creator, creator").joinToString(", ") { it.text().trim() }.takeIf { it.isNotEmpty() },
-            language = meta?.select("dc\\:language, language").firstOrNull()?.text()?.trim()?.takeIf { it.isNotEmpty() },
-            publisher = meta?.select("dc\\:publisher, publisher").firstOrNull()?.text()?.trim()?.takeIf { it.isNotEmpty() },
-            publishedDate = meta?.select("dc\\:date, date").firstOrNull()?.text()?.trim()?.takeIf { it.isNotEmpty() },
-            description = meta?.select("dc\\:description, description").firstOrNull()?.text()?.trim()?.takeIf { it.isNotEmpty() },
+            title = meta?.select("dc\\:title, title")?.firstOrNull()?.text()?.trim()?.takeIf { it.isNotEmpty() },
+            author = meta?.select("dc\\:creator, creator")?.joinToString(", ") { it.text().trim() }?.takeIf { it.isNotEmpty() },
+            language = meta?.select("dc\\:language, language")?.firstOrNull()?.text()?.trim()?.takeIf { it.isNotEmpty() },
+            publisher = meta?.select("dc\\:publisher, publisher")?.firstOrNull()?.text()?.trim()?.takeIf { it.isNotEmpty() },
+            publishedDate = meta?.select("dc\\:date, date")?.firstOrNull()?.text()?.trim()?.takeIf { it.isNotEmpty() },
+            description = meta?.select("dc\\:description, description")?.firstOrNull()?.text()?.trim()?.takeIf { it.isNotEmpty() },
             coverBytes = extractCoverBytes(context, source),
         )
     }
@@ -188,7 +188,7 @@ class EpubEngine @Inject constructor() : DocumentEngine {
             val ncxDoc = try { Jsoup.parse(zip.getInputStream(zip.getEntry(ncxPath)).bufferedReader().use { it.readText() }) } catch (e: Exception) { null }
             if (ncxDoc != null) {
                 val toc = mutableListOf<TocEntry>()
-                collectNcxItems(ncxDoc.select("navMap > navPoint").firstOrNull(), spinePaths, 1, toc)
+                collectNcxItems(ncxDoc.select("navMap").firstOrNull(), spinePaths, 1, toc)
                 return toc
             }
         }

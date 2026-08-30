@@ -12,7 +12,6 @@ import com.atlasreader.core.engine.ParsedDocument
 import com.atlasreader.core.engine.ProseChunk
 import com.atlasreader.core.engine.TocEntry
 import com.atlasreader.core.util.FilenameUtils
-import com.atlasreader.core.util.escapeHtml
 import javax.inject.Inject
 import javax.inject.Singleton
 

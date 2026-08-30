@@ -2,7 +2,7 @@ package com.atlasreader.ui.collections
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.atlasreader.data.repository.CollectionWithCount
+import com.atlasreader.core.database.entity.CollectionWithCount
 import com.atlasreader.domain.model.DocumentSummary
 import com.atlasreader.domain.usecase.CollectionsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

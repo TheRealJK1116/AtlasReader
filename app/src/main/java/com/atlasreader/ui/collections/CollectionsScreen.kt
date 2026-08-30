@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.atlasreader.data.repository.CollectionWithCount
+import com.atlasreader.core.database.entity.CollectionWithCount
 import com.atlasreader.ui.components.EmptyState
 
 @OptIn(ExperimentalMaterial3Api::class)

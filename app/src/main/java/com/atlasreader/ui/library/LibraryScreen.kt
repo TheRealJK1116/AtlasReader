@@ -81,6 +81,7 @@ import androidx.paging.compose.itemKey
 import com.atlasreader.core.database.LibraryFilter
 import com.atlasreader.core.database.LibrarySort
 import com.atlasreader.core.database.ReadingStatusFilter
+import com.atlasreader.core.database.entity.CollectionWithCount
 import com.atlasreader.core.engine.DocumentFormat
 import com.atlasreader.domain.model.DocumentSummary
 import com.atlasreader.ui.components.CoverImage
@@ -624,7 +625,7 @@ private fun FilterSheet(
 
 @Composable
 private fun CollectionPickerSheet(
-    collections: List<com.atlasreader.data.repository.CollectionWithCount>,
+    collections: List<CollectionWithCount>,
     onPick: (Long) -> Unit,
     onDismiss: () -> Unit,
 ) {

@@ -1,7 +1,7 @@
 package com.atlasreader.data.repository
 
 import androidx.paging.PagingSource
-import androidx.sqlite.db.SupportSQLiteQuery
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.atlasreader.core.common.DispatcherProvider
 import com.atlasreader.core.common.TimeProvider
 import com.atlasreader.core.database.LibraryFilter
@@ -12,6 +12,7 @@ import com.atlasreader.core.database.dao.DocumentDao
 import com.atlasreader.core.database.dao.TagDao
 import com.atlasreader.core.database.entity.CollectionDocumentCrossRef
 import com.atlasreader.core.database.entity.CollectionEntity
+import com.atlasreader.core.database.entity.CollectionWithCount
 import com.atlasreader.core.database.entity.DocumentEntity
 import com.atlasreader.core.database.entity.DocumentTagCrossRef
 import com.atlasreader.core.database.entity.TagEntity
@@ -46,7 +47,7 @@ class LibraryRepository @Inject constructor(
     fun library(filter: LibraryFilter, sort: LibrarySort): PagingSource<Int, DocumentSummary> {
         val built = LibraryQueryBuilder.build(filter, sort)
         return documentDao.observeLibrary(
-            SupportSQLiteQuery(built.sql, built.args.toTypedArray())
+            SimpleSQLiteQuery(built.sql, built.args.toTypedArray())
         ).map { it.toSummary() }
     }
 
@@ -118,10 +119,3 @@ class LibraryRepository @Inject constructor(
 
     suspend fun deleteTag(tagId: Long) = tagDao.delete(tagId)
 }
-
-data class CollectionWithCount(
-    val id: Long,
-    val name: String,
-    val createdAtMs: Long,
-    val documentCount: Int,
-)

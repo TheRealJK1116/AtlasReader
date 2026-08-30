@@ -5,6 +5,7 @@ import androidx.paging.PagingSource
 import com.atlasreader.core.common.AtlasResult
 import com.atlasreader.core.database.LibraryFilter
 import com.atlasreader.core.database.LibrarySort
+import com.atlasreader.core.database.entity.CollectionWithCount
 import com.atlasreader.core.engine.ParsedDocument
 import com.atlasreader.core.importer.ImportRequest
 import com.atlasreader.data.repository.LibraryRepository
@@ -71,7 +72,7 @@ class DeleteDocumentsUseCase @Inject constructor(
 class CollectionsUseCase @Inject constructor(
     private val repository: LibraryRepository,
 ) {
-    fun observeAll(): Flow<List<com.atlasreader.data.repository.CollectionWithCount>> = repository.collections()
+    fun observeAll(): Flow<List<CollectionWithCount>> = repository.collections()
 
     suspend fun create(name: String): Long = repository.createCollection(name)
 

@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.atlasreader.core.database.entity.CollectionDocumentCrossRef
 import com.atlasreader.core.database.entity.CollectionEntity
+import com.atlasreader.core.database.entity.CollectionWithCount
 import com.atlasreader.core.database.entity.DocumentRow
 import kotlinx.coroutines.flow.Flow
 
@@ -62,10 +63,3 @@ interface CollectionDao {
     )
     fun observeDocumentsIn(collectionId: Long): Flow<List<DocumentRow>>
 }
-
-data class CollectionWithCount(
-    val id: Long,
-    val name: String,
-    val createdAtMs: Long,
-    val documentCount: Int,
-)

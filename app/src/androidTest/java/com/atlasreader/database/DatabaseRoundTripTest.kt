@@ -98,7 +98,7 @@ class DatabaseRoundTripTest {
         }
 
         val hits: List<SearchHitRow> = db.searchDao().searchIndex(
-            androidx.sqlite.db.SupportSQLiteQuery(
+            androidx.sqlite.db.SimpleSQLiteQuery(
                 "SELECT documentId, chunkToken, position, term FROM search_index WHERE search_index MATCH ?",
                 arrayOf("\"fox\"*"),
             )

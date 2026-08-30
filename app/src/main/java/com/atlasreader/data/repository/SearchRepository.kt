@@ -1,6 +1,6 @@
 package com.atlasreader.data.repository
 
-import androidx.sqlite.db.SupportSQLiteQuery
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.atlasreader.core.common.DispatcherProvider
 import com.atlasreader.core.common.TimeProvider
 import com.atlasreader.core.database.dao.DocumentDao
@@ -47,14 +47,14 @@ class SearchRepository @Inject constructor(
             }
             val hits = try {
                 searchDao.searchIndex(
-                    SupportSQLiteQuery(
+                    SimpleSQLiteQuery(
                         FTS_SELECT, arrayOf(matchQuery)
                     )
                 )
             } catch (e: Exception) {
                 // Malformed MATCH syntax (e.g. quoted single chars) — fall back to OR.
                 val orQuery = terms.joinToString(" OR ") { "\"$it\"*" }
-                searchDao.searchIndex(SupportSQLiteQuery(FTS_SELECT, arrayOf(orQuery)))
+                searchDao.searchIndex(SimpleSQLiteQuery(FTS_SELECT, arrayOf(orQuery)))
             }
             if (hits.isEmpty()) return@withContext emptyList()
 

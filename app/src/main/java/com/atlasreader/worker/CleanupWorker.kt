@@ -30,13 +30,10 @@ class CleanupWorker @AssistedInject constructor(
         return try {
             searchDao.pruneHistory(keep = 30)
 
-            // Covers referenced by any document (also across hash reuse).
-            val referenced = documentDao.allIds().mapNotNull { documentDao.byId(it) }
-                .mapNotNull { it.contentHash }
-            val keepPrefixes = referenced.map { "covers/$it.jpg" }
-            coverStore.deleteOrphanFiles(keepPaths = emptySet()) { path ->
-                val name = File(path).name // <hash>.jpg
-                keepPrefixes.none { it.endsWith(name) }
+            // Covers referenced by any document: keep <hash>.jpg, delete the rest.
+            val referencedNames = documentDao.allHashes().map { "$it.jpg" }.toSet()
+            coverStore.deleteOrphanFiles { path ->
+                File(path).name in referencedNames
             }
 
             // Remove import staging dirs left from interrupted copies.

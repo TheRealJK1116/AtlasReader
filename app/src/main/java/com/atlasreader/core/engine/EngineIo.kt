@@ -16,7 +16,9 @@ internal object EngineIo {
 
     fun open(context: Context?, source: DocumentSource): InputStream =
         source.file?.inputStream()
-            ?: context?.contentResolver?.openInputStream(source.uri)
+            ?: source.uri?.let { uri ->
+                context?.contentResolver?.openInputStream(uri)
+            }
             ?: throw DocumentOpenException(
                 source.extension?.let { DocumentFormat.fromExtension(it) } ?: DocumentFormat.TXT,
                 DocumentOpenException.Reason.CORRUPT,
