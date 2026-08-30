@@ -1,6 +1,8 @@
 package com.atlasreader.data.repository
 
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingSource
+import androidx.paging.map
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.atlasreader.core.common.DispatcherProvider
 import com.atlasreader.core.common.TimeProvider
@@ -44,6 +46,7 @@ class LibraryRepository @Inject constructor(
 
     // ------------------------------------------------------------- browsing
 
+    @OptIn(ExperimentalPagingApi::class)
     fun library(filter: LibraryFilter, sort: LibrarySort): PagingSource<Int, DocumentSummary> {
         val built = LibraryQueryBuilder.build(filter, sort)
         return documentDao.observeLibrary(

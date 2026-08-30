@@ -90,25 +90,27 @@ class SettingsViewModel @Inject constructor(
     }
 
     /** Apply settings from an exported JSON file. Returns error message or null. */
-    suspend fun importJson(uri: Uri, context: Context): String? = try {
-        val json = JSONObject(
-            context.contentResolver.openInputStream(uri)?.bufferedReader()?.use { it.readText() }
-                ?: return "Could not read file"
-        )
-        if (json.optString("format") != "atlas-reader-settings") return "Not an Atlas Reader settings file"
-        runCatching { ThemeMode.valueOf(json.getString("themeMode")) }.getOrNull()?.let { settings.setThemeMode(it) }
-        settings.setDynamicColor(json.optBoolean("dynamicColor", true))
-        settings.setFontSizeSp(json.optInt("fontSizeSp", 18))
-        settings.setFontFamily(json.optString("fontFamily", "system"))
-        settings.setLineSpacing(json.optDouble("lineSpacing", 1.4).toFloat())
-        settings.setPageWidthPercent(json.optInt("pageWidthPercent", 92))
-        settings.setMarginPercent(json.optInt("marginPercent", 6))
-        settings.setBrightnessPercent(json.optInt("brightnessPercent", -1))
-        settings.setFullscreen(json.optBoolean("fullscreen", false))
-        settings.setOrientationLock(json.optInt("orientationLock", 0))
-        settings.setImportAutoOpen(json.optBoolean("importAutoOpen", true))
-        null
-    } catch (e: Exception) {
-        e.message ?: "Import failed"
+    suspend fun importJson(uri: Uri, context: Context): String? {
+        return try {
+            val json = JSONObject(
+                context.contentResolver.openInputStream(uri)?.bufferedReader()?.use { it.readText() }
+                    ?: return "Could not read file"
+            )
+            if (json.optString("format") != "atlas-reader-settings") return "Not an Atlas Reader settings file"
+            runCatching { ThemeMode.valueOf(json.getString("themeMode")) }.getOrNull()?.let { settings.setThemeMode(it) }
+            settings.setDynamicColor(json.optBoolean("dynamicColor", true))
+            settings.setFontSizeSp(json.optInt("fontSizeSp", 18))
+            settings.setFontFamily(json.optString("fontFamily", "system"))
+            settings.setLineSpacing(json.optDouble("lineSpacing", 1.4).toFloat())
+            settings.setPageWidthPercent(json.optInt("pageWidthPercent", 92))
+            settings.setMarginPercent(json.optInt("marginPercent", 6))
+            settings.setBrightnessPercent(json.optInt("brightnessPercent", -1))
+            settings.setFullscreen(json.optBoolean("fullscreen", false))
+            settings.setOrientationLock(json.optInt("orientationLock", 0))
+            settings.setImportAutoOpen(json.optBoolean("importAutoOpen", true))
+            null
+        } catch (e: Exception) {
+            e.message ?: "Import failed"
+        }
     }
 }
