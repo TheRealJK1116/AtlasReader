@@ -70,103 +70,103 @@ fun ReaderWebView(
 
     AndroidView(
         factory = { ctx ->
-            WebView(ctx).apply {
-                @SuppressLint("SetJavaScriptEnabled")
-                settings.javaScriptEnabled = true
-                settings.domStorageEnabled = true
-                settings.allowFileAccess = true
-                settings.allowContentAccess = false
-                settings.mixedContentMode = WebSettings.MIXED_CONTENT_NEVER_ALLOW
-                settings.textZoom = 100
-                settings.defaultTextEncodingName = "UTF-8"
-                setBackgroundColor(Color.TRANSPARENT)
+            val view = WebView(ctx)
+            @SuppressLint("SetJavaScriptEnabled")
+            view.settings.javaScriptEnabled = true
+            view.settings.domStorageEnabled = true
+            view.settings.allowFileAccess = true
+            view.settings.allowContentAccess = false
+            view.settings.mixedContentMode = WebSettings.MIXED_CONTENT_NEVER_ALLOW
+            view.settings.textZoom = 100
+            view.settings.defaultTextEncodingName = "UTF-8"
+            view.setBackgroundColor(Color.TRANSPARENT)
 
-                addJavascriptInterface(
-                    object {
-                        @JavascriptInterface
-                        fun onReady() = currentOnReady()
+            view.addJavascriptInterface(
+                object {
+                    @JavascriptInterface
+                    fun onReady() = currentOnReady()
 
-                        @JavascriptInterface
-                        fun onScrollFraction(fraction: Double) =
-                            currentOnScroll(fraction.toFloat().coerceIn(0f, 1f))
+                    @JavascriptInterface
+                    fun onScrollFraction(fraction: Double) =
+                        currentOnScroll(fraction.toFloat().coerceIn(0f, 1f))
 
-                        @JavascriptInterface
-                        fun onSelection(start: Int, end: Int, text: String) =
-                            currentOnSelection(start, end, text)
+                    @JavascriptInterface
+                    fun onSelection(start: Int, end: Int, text: String) =
+                        currentOnSelection(start, end, text)
 
-                        @JavascriptInterface
-                        fun onTap() = currentOnTap()
-                    },
-                    "AtlasJs",
-                )
+                    @JavascriptInterface
+                    fun onTap() = currentOnTap()
+                },
+                "AtlasJs",
+            )
 
-                webChromeClient = WebChromeClient()
+            view.webChromeClient = WebChromeClient()
 
-                webViewClient = object : WebViewClient() {
-                    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-                        val url = request.url.toString()
-                        if (url.startsWith("file://")) {
-                            // Internal link (epub chapter, local resource) — delegate.
-                            if (currentOnLink(url)) return true
-                            // Not handled: fall through to default (opens in this WebView).
-                            return super.shouldOverrideUrlLoading(view, request)
-                        }
-                        if (url.startsWith("http://") || url.startsWith("https://")) {
-                            // External link — open in the browser, never inside the reader.
-                            runCatching {
-                                val intent = android.content.Intent(
-                                    android.content.Intent.ACTION_VIEW,
-                                    android.net.Uri.parse(url),
-                                )
-                                view.context.startActivity(intent)
-                            }
-                            return true
-                        }
-                        return super.shouldOverrideUrlLoading(view, request)
+            view.webViewClient = object : WebViewClient() {
+                override fun shouldOverrideUrlLoading(v: WebView, request: WebResourceRequest): Boolean {
+                    val url = request.url.toString()
+                    if (url.startsWith("file://")) {
+                        // Internal link (epub chapter, local resource) — delegate.
+                        if (currentOnLink(url)) return true
+                        // Not handled: fall through to default (opens in this WebView).
+                        return super.shouldOverrideUrlLoading(v, request)
                     }
-
-                    override fun onPageFinished(view: WebView, url: String?) {
-                        injectAtlasScripts(view)
-                        applyHighlights(view, currentHighlights)
-                        if (currentInitialFraction > 0f) {
-                            scrollToFraction(view, currentInitialFraction)
+                    if (url.startsWith("http://") || url.startsWith("https://")) {
+                        // External link — open in the browser, never inside the reader.
+                        runCatching {
+                            val intent = android.content.Intent(
+                                android.content.Intent.ACTION_VIEW,
+                                android.net.Uri.parse(url),
+                            )
+                            v.context.startActivity(intent)
                         }
-                        currentOnReady()
+                        return true
                     }
+                    return super.shouldOverrideUrlLoading(v, request)
                 }
 
-                if (allowSelectionActions) {
-                    setCustomSelectionActionModeCallback(object : ActionMode.Callback {
-                        private val HIGHLIGHT = 1001
-                        private val NOTE = 1002
-
-                        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-                            menu.add(0, HIGHLIGHT, 10, "Highlight")
-                            menu.add(0, NOTE, 20, "Add note")
-                            return true
-                        }
-
-                        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean = false
-
-                        override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-                            return when (item.itemId) {
-                                HIGHLIGHT, NOTE -> {
-                                    requestSelection(this@apply) { start, end, text ->
-                                        currentOnSelection(start, end, text)
-                                    }
-                                    mode.finish()
-                                    true
-                                }
-                                else -> false
-                            }
-                        }
-
-                        override fun onDestroyActionMode(mode: ActionMode) {}
-                    })
+                override fun onPageFinished(v: WebView, url: String?) {
+                    injectAtlasScripts(v)
+                    applyHighlights(v, currentHighlights)
+                    if (currentInitialFraction > 0f) {
+                        scrollToFraction(v, currentInitialFraction)
+                    }
+                    currentOnReady()
                 }
-
-                webView.value = this
             }
+
+            if (allowSelectionActions) {
+                view.customSelectionActionModeCallback = object : ActionMode.Callback {
+                    private val HIGHLIGHT = 1001
+                    private val NOTE = 1002
+
+                    override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+                        menu.add(0, HIGHLIGHT, 10, "Highlight")
+                        menu.add(0, NOTE, 20, "Add note")
+                        return true
+                    }
+
+                    override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean = false
+
+                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+                        return when (item.itemId) {
+                            HIGHLIGHT, NOTE -> {
+                                requestSelection(view) { start, end, text ->
+                                    currentOnSelection(start, end, text)
+                                }
+                                mode.finish()
+                                true
+                            }
+                            else -> false
+                        }
+                    }
+
+                    override fun onDestroyActionMode(mode: ActionMode) {}
+                }
+            }
+
+            webView.value = view
+            view
         },
         modifier = Modifier,
     )
