@@ -15,24 +15,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CollectionsViewModel @Inject constructor(
-    private val collections: CollectionsUseCase,
+    private val collectionsUseCase: CollectionsUseCase,
 ) : ViewModel() {
 
     val collections: StateFlow<List<CollectionWithCount>> =
-        collections.observeAll().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+        collectionsUseCase.observeAll().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun create(name: String) {
-        viewModelScope.launch { collections.create(name) }
+        viewModelScope.launch { collectionsUseCase.create(name) }
     }
 
     fun delete(id: Long) {
-        viewModelScope.launch { collections.delete(id) }
+        viewModelScope.launch { collectionsUseCase.delete(id) }
     }
 
     fun documentsIn(collectionId: Long): Flow<List<DocumentSummary>> =
-        collections.documentsIn(collectionId)
+        collectionsUseCase.documentsIn(collectionId)
 
     fun removeDocument(collectionId: Long, documentId: Long) {
-        viewModelScope.launch { collections.removeDocument(collectionId, documentId) }
+        viewModelScope.launch { collectionsUseCase.removeDocument(collectionId, documentId) }
     }
 }

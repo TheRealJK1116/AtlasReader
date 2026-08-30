@@ -132,8 +132,11 @@ class ReaderViewModel @Inject constructor(
     val isPdf: Boolean
         get() = content?.parsed?.pageProvider != null
 
+    /** Filled once when the document opens — [PageProvider.pageCount] is suspend. */
+    private var cachedPageCount: Int = 0
+
     val pageCount: Int
-        get() = content?.parsed?.pageProvider?.pageCount ?: 0
+        get() = cachedPageCount
 
     val chunkCount: Int get() = chunks.size
 
@@ -166,6 +169,7 @@ class ReaderViewModel @Inject constructor(
             uiState = when (val result = openDocument(documentId)) {
                 is AtlasResult.Success -> {
                     val opened = result.value
+                    cachedPageCount = opened.parsed.pageProvider?.pageCount() ?: 0
                     opened.position?.let { position ->
                         val index = opened.parsed.chunks.indexOfFirst {
                             it.resourceToken == position.resourceToken
