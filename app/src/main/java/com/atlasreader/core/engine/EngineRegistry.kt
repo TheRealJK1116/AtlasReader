@@ -1,5 +1,11 @@
 package com.atlasreader.core.engine
 
+import com.atlasreader.core.engine.engines.EpubEngine
+import com.atlasreader.core.engine.engines.HtmlEngine
+import com.atlasreader.core.engine.engines.MarkdownEngine
+import com.atlasreader.core.engine.engines.PdfEngine
+import com.atlasreader.core.engine.engines.RtfEngine
+import com.atlasreader.core.engine.engines.TextEngine
 import javax.inject.Inject
 import javax.inject.Singleton
 
