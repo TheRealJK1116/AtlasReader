@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+
 package com.atlasreader.ui.search
 
 import androidx.compose.foundation.ExperimentalFoundationApi
