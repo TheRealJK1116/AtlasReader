@@ -334,7 +334,7 @@ object RtfToHtml {
                     if (style.bold) css += "font-weight:bold"
                     if (style.italic) css += "font-style:italic"
                     if (style.underline) css += "text-decoration:underline"
-                    if (style.fontSizeHalfPoints != 24) css += "font-size:${(style.fontSizeHalfPoints / 2.0).coerceAtLeast(6)}pt"
+                    if (style.fontSizeHalfPoints != 24) css += "font-size:${(style.fontSizeHalfPoints / 2.0).coerceAtLeast(6.0)}pt"
                     val fg = doc.colorTable.getOrNull(style.colorIndex)
                     if (fg != null && style.colorIndex > 0) css += "color:$fg"
                     val bg = HIGHLIGHT_COLORS[style.highlightIndex]
