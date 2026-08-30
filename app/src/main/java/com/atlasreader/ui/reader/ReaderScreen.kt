@@ -319,7 +319,7 @@ private fun ReaderContent(
             onFullscreen = { viewModel.setFullscreen(it) },
             onOrientation = { viewModel.setOrientationLock(it) },
             onTheme = { viewModel.setReaderTheme(it) },
-            onPickHighlightColor = { viewModel.setPendingHighlightColor(it) },
+            onPickHighlightColor = { viewModel.updatePendingHighlightColor(it) },
             onDismiss = { showReaderSettings = false },
         )
     }
@@ -528,7 +528,7 @@ private fun InDocumentSearchBar(
             OutlinedTextField(
                 value = viewModel.searchQuery,
                 onValueChange = {
-                    viewModel.setSearchQuery(it)
+                    viewModel.updateSearchQuery(it)
                     controller.search(it)
                 },
                 placeholder = { Text("Search in document") },

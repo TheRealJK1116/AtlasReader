@@ -109,7 +109,7 @@ class LibraryViewModel @Inject constructor(
         viewModelScope.launch { settings.saveLibrarySort(sort) }
     }
 
-    fun setViewMode(mode: LibraryViewMode) {
+    fun updateViewMode(mode: LibraryViewMode) {
         viewMode = mode
         viewModelScope.launch { settings.saveViewMode(mode.name) }
     }

@@ -202,7 +202,7 @@ fun LibraryScreen(
                                         },
                                         onClick = {
                                             showViewMenu = false
-                                            viewModel.setViewMode(mode)
+                                            viewModel.updateViewMode(mode)
                                         },
                                     )
                                 }

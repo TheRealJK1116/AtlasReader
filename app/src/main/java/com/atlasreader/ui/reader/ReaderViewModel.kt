@@ -262,7 +262,7 @@ class ReaderViewModel @Inject constructor(
 
     // ----------------------------------------------------------- annotations
 
-    fun setPendingHighlightColor(color: String) {
+    fun updatePendingHighlightColor(color: String) {
         pendingHighlightColor = color
     }
 
@@ -332,7 +332,7 @@ class ReaderViewModel @Inject constructor(
         if (!searchVisible) searchQuery = ""
     }
 
-    fun setSearchQuery(query: String) {
+    fun updateSearchQuery(query: String) {
         searchQuery = query
     }
 

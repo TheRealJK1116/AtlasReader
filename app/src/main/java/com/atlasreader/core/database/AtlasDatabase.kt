@@ -76,10 +76,8 @@ abstract class AtlasDatabase : RoomDatabase() {
 
         /** Contentless FTS4: rows are (documentId, chunkToken, position, term). */
         const val FTS_SCHEMA = (
-            "CREATE VIRTUAL TABLE IF NOT EXISTS search_index USING fts4(" +
-                "documentId, chunkToken, position, term, " +
-                "tokenize=unicode61 \"remove_diacritics 2\")"
-            )
+            "CREATE VIRTUAL TABLE IF NOT EXISTS search_index USING fts4(documentId, chunkToken, position, term)"
+        )
 
         val CALLBACK = object : Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
